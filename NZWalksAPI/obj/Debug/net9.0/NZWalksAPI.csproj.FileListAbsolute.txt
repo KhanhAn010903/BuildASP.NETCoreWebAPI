@@ -146,3 +146,6 @@
 /home/hoangnh/Desktop/Net/NZWalksAPI/NZWalksAPI/bin/Debug/net9.0/Swashbuckle.AspNetCore.Swagger.dll
 /home/hoangnh/Desktop/Net/NZWalksAPI/NZWalksAPI/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerGen.dll
 /home/hoangnh/Desktop/Net/NZWalksAPI/NZWalksAPI/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+/home/hoangnh/Desktop/Net/NZWalksAPI/NZWalksAPI/bin/Debug/net9.0/AutoMapper.dll
+/home/hoangnh/Desktop/Net/NZWalksAPI/NZWalksAPI/bin/Debug/net9.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+/home/hoangnh/Desktop/Net/NZWalksAPI/NZWalksAPI/obj/Debug/net9.0/NZWalksAPI.sourcelink.json
