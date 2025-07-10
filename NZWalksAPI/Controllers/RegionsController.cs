@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NZWalksAPI.CustomActionFilters;
 using NZWalksAPI.Data;
 using NZWalksAPI.Models.Domain;
 using NZWalksAPI.Models.DTO;
@@ -10,7 +11,7 @@ namespace NZWalksAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class RegionsController(IRegionRepository regionRepository,IMapper mapper) : ControllerBase
+public class RegionsController(IRegionRepository regionRepository, IMapper mapper) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetAll()
@@ -33,6 +34,7 @@ public class RegionsController(IRegionRepository regionRepository,IMapper mapper
     }
 
     [HttpPost]
+    [ValidateModel]
     public async Task<IActionResult> Create([FromBody] AddRegionRequestDTO addRegionRequestDTO)
     {
         var regionDomainModel = mapper.Map<Region>(addRegionRequestDTO);
@@ -41,15 +43,18 @@ public class RegionsController(IRegionRepository regionRepository,IMapper mapper
         return CreatedAtAction(nameof(GetById), new { id = regionDto.Id }, regionDto);
     }
 
+
     [HttpPut]
     [Route("{id:Guid}")]
+    [ValidateModel]
     public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateRegionRequestDTO updateRegionRequestDTO)
     {
-        var regionDomainModel =  mapper.Map<Region>(updateRegionRequestDTO);
-        regionDomainModel = await regionRepository.UpdateAsync(id, regionDomainModel);
-        if (regionDomainModel == null) return NotFound();
-        var regionDto = mapper.Map<RegionDTO>(regionDomainModel);
-        return Ok(regionDto);
+
+            var regionDomainModel = mapper.Map<Region>(updateRegionRequestDTO);
+            regionDomainModel = await regionRepository.UpdateAsync(id, regionDomainModel);
+            if (regionDomainModel == null) return NotFound();
+            var regionDto = mapper.Map<RegionDTO>(regionDomainModel);
+            return Ok(regionDto);
     }
     [HttpDelete]
     [Route("{id:Guid}")]

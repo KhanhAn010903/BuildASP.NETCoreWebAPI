@@ -20,9 +20,16 @@ public class WalksController(IMapper mapper, IWalkRepository walkRepository) : C
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] AddWalkRequestDTO addWalkRequestDTO)
     {
-        var walkDomainModel = mapper.Map<Walk>(addWalkRequestDTO);
-        await walkRepository.CreateAsync(walkDomainModel);
-        return Ok(mapper.Map<WalkDTO>(walkDomainModel));
+        if (ModelState.IsValid)
+        {
+            var walkDomainModel = mapper.Map<Walk>(addWalkRequestDTO);
+            await walkRepository.CreateAsync(walkDomainModel);
+            return Ok(mapper.Map<WalkDTO>(walkDomainModel));
+        }
+        else
+        {
+            return BadRequest(ModelState);
+        }
     }
     [HttpGet]
     [Route("{id:Guid}")]
@@ -40,13 +47,20 @@ public class WalksController(IMapper mapper, IWalkRepository walkRepository) : C
     [Route("{id:Guid}")]
     public async Task<IActionResult> Update([FromRoute] Guid id, UpdateWalkRequestDTO updateWalkRequestDTO)
     {
-        var walkDomainModel = mapper.Map<Walk>(updateWalkRequestDTO);
-        walkDomainModel = await walkRepository.UpdateAsync(id, walkDomainModel);
-        if (walkDomainModel == null)
+        if (ModelState.IsValid)
         {
-            return NotFound();
+            var walkDomainModel = mapper.Map<Walk>(updateWalkRequestDTO);
+            walkDomainModel = await walkRepository.UpdateAsync(id, walkDomainModel);
+            if (walkDomainModel == null)
+            {
+                return NotFound();
+            }
+            return Ok(mapper.Map<WalkDTO>(walkDomainModel));
         }
-        return Ok(mapper.Map<WalkDTO>(walkDomainModel));
+        else
+        {
+            return BadRequest(ModelState);
+        }
     }
     [HttpDelete]
     [Route("{id:Guid}")]
